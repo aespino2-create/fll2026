@@ -2,7 +2,7 @@
   {
     "id": 1,
     "nombre": "Foto1",
-    "imagen": "Foto1.jpg",
+    "imagen": "Foto1",
     "descripcion": "Un amanecer con nubes doradas sobre las montañas nevadas.",
     "puntuacion": 8.5
   },
@@ -14,3 +14,4 @@
     "puntuacion": 9.2
   }
 ]
+
