@@ -37,7 +37,52 @@
       opacity:0;
       pointer-events:none;
     }
-  </style>
+ <style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fb;
+    overflow-y: auto; /* ✅ permet scroll vertical */
+  }
+
+  .photo-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    min-height: 100vh; /* ✅ deixa espai complet però permet creixement */
+    box-sizing: border-box;
+  }
+
+  .photo-view img {
+    max-width: 90%;
+    height: auto; /* ✅ manté proporció */
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    margin: 20px 0;
+  }
+
+  .photo-view p {
+    max-width: 800px;
+    line-height: 1.5;
+  }
+
+  button {
+    background-color: #1e63ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  button:hover {
+    background-color: #1550cc;
+  }
+</style>
+ </style>
 </head>
 <body>
   <!-- Pantalla de portada -->
@@ -120,4 +165,5 @@
   </script>
 </body>
 </html>
+
 
