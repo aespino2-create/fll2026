@@ -3,8 +3,8 @@
     "id": 1,
     "nombre": "Mission01",
     "imagen": "mission01.jpg",
-    "descripcion": "Primera missió: inici del projecte amb els primers passos.",
-    "puntuacion": 8.5
+    "descripcion": "Surface Brushing.",
+    "puntuacion": 10+10+10
   },
   {
     "id": 2,
@@ -105,3 +105,4 @@
     "puntuacion": 9.7
   }
 ]
+
