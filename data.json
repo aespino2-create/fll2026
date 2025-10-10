@@ -1,17 +1,53 @@
 [
   {
     "id": 1,
-    "nombre": "Foto1",
-    "imagen": "Foto1",
-    "descripcion": "Un amanecer con nubes doradas sobre las montañas nevadas.",
+    "nombre": "Mission01",
+    "imagen": "mission01.jpg",
+    "descripcion": "Primera missió: inici del projecte amb els primers passos.",
     "puntuacion": 8.5
   },
   {
     "id": 2,
-    "nombre": "Foto2",
-    "imagen": "Foto2.jpg",
-    "descripcion": "La calma del mar al atardecer con tonos rosados.",
+    "nombre": "Mission02",
+    "imagen": "mission02.jpg",
+    "descripcion": "Segona missió: treball en equip i planificació inicial.",
+    "puntuacion": 9.0
+  },
+  {
+    "id": 3,
+    "nombre": "Mission03",
+    "imagen": "mission03.jpg",
+    "descripcion": "Tercera missió: prototip del robot i proves inicials.",
+    "puntuacion": 7.8
+  },
+  {
+    "id": 4,
+    "nombre": "Mission04",
+    "imagen": "mission04.jpg",
+    "descripcion": "Quarta missió: optimització dels moviments i sensors.",
+    "puntuacion": 8.9
+  },
+  {
+    "id": 5,
+    "nombre": "Mission05",
+    "imagen": "mission05.jpg",
+    "descripcion": "Cinquena missió: presentació de resultats a l'equip.",
     "puntuacion": 9.2
-  }
-]
-
+  },
+  {
+    "id": 6,
+    "nombre": "Mission06",
+    "imagen": "mission06.jpg",
+    "descripcion": "Sisena missió: test amb el camp de joc complet.",
+    "puntuacion": 8.7
+  },
+  {
+    "id": 7,
+    "nombre": "Mission07",
+    "imagen": "mission07.jpg",
+    "descripcion": "Setena missió: millora del disseny i estabilitat del robot.",
+    "puntuacion": 9.1
+  },
+  {
+    "id": 8,
+    "nombre": "Mission08",
