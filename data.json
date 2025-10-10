@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "nombre": "Foto 1",
+    "imagen": "img/foto1.jpg",
+    "descripcion": "Un amanecer con nubes doradas sobre las montañas nevadas.",
+    "puntuacion": 8.5
+  },
+  {
+    "id": 2,
+    "nombre": "Foto 2",
+    "imagen": "img/foto2.jpg",
+    "descripcion": "La calma del mar al atardecer con tonos rosados.",
+    "puntuacion": 9.2
+  }
+]
