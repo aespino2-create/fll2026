@@ -4,86 +4,126 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Galería de Fotografías — Visualización</title>
+
   <style>
-    body{font-family:Inter,system-ui,Arial;margin:0;background:#f4f6fb;color:#111;display:flex;flex-direction:column;min-height:100vh;overflow:hidden}
-    header{background:#1f6feb;color:#fff;padding:16px;text-align:center}
-    main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
-    .menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:16px;width:100%;max-width:800px;margin-top:20px}
-    .menu button{background:#fff;border:none;border-radius:12px;padding:20px;box-shadow:0 4px 8px rgba(0,0,0,.1);cursor:pointer;font-size:1rem;transition:.2s}
-    .menu button:hover{background:#1f6feb;color:#fff;transform:scale(1.05)}
-    .viewer{display:none;flex-direction:column;align-items:center;gap:16px;max-width:800px;width:100%}
-    .viewer img{max-width:100%;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.2)}
-    .descripcion{background:#fff;border-radius:12px;padding:12px;box-shadow:0 4px 8px rgba(0,0,0,.1)}
-    .back-btn{align-self:flex-start;background:#1f6feb;color:#fff;border:none;border-radius:8px;padding:8px 12px;cursor:pointer}
-    .puntuacion{font-size:1.2rem;color:#1f6feb}
+    body {
+      font-family: Inter, system-ui, Arial;
+      margin: 0;
+      background: #f4f6fb;
+      color: #111;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-y: auto; /* ✅ permet fer scroll */
+    }
 
-    /* Pantalla inicial */
+    header {
+      background: #1f6feb;
+      color: #fff;
+      padding: 16px;
+      text-align: center;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px;
+    }
+
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+      width: 100%;
+      max-width: 800px;
+      margin-top: 20px;
+    }
+
+    .menu button {
+      background: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+      cursor: pointer;
+      font-size: 1rem;
+      transition: .2s;
+    }
+
+    .menu button:hover {
+      background: #1f6feb;
+      color: #fff;
+      transform: scale(1.05);
+    }
+
+    .viewer {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      max-width: 800px;
+      width: 100%;
+      padding-bottom: 40px; /* ✅ espai per evitar tallar part inferior */
+    }
+
+    .viewer img {
+      max-width: 90%;
+      height: auto; /* ✅ manté proporció */
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
+      margin: 20px 0;
+    }
+
+    .descripcion {
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+    }
+
+    .back-btn {
+      align-self: flex-start;
+      background: #1f6feb;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .puntuacion {
+      font-size: 1.2rem;
+      color: #1f6feb;
+    }
+
+    /* Pantalla inicial (portada) */
     #intro {
-      position:fixed;
-      inset:0;
-      background:#000;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index:1000;
-      transition:opacity 1s ease-out;
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 1s ease-out;
     }
+
     #intro img {
-      max-width:100%;
-      max-height:100%;
-      object-fit:cover;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
     }
+
     #intro.oculto {
-      opacity:0;
-      pointer-events:none;
+      opacity: 0;
+      pointer-events: none;
     }
- <style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f5f7fb;
-    overflow-y: auto; /* ✅ permet scroll vertical */
-  }
-
-  .photo-view {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    min-height: 100vh; /* ✅ deixa espai complet però permet creixement */
-    box-sizing: border-box;
-  }
-
-  .photo-view img {
-    max-width: 90%;
-    height: auto; /* ✅ manté proporció */
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    margin: 20px 0;
-  }
-
-  .photo-view p {
-    max-width: 800px;
-    line-height: 1.5;
-  }
-
-  button {
-    background-color: #1e63ff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 16px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  button:hover {
-    background-color: #1550cc;
-  }
-</style>
- </style>
+  </style>
 </head>
+
 <body>
   <!-- Pantalla de portada -->
   <div id="intro">
@@ -108,62 +148,7 @@
   </main>
 
   <script>
-  let datos = [];
+    let datos = [];
 
-  async function cargarDatos(){
-    try{
-      const resp = await fetch('data.json');
-      datos = await resp.json();
-      crearMenu();
-    }catch(err){
-      document.getElementById('menu').innerHTML = '<p>Error al cargar data.json</p>';
-      console.error(err);
-    }
-  }
-
-  function crearMenu(){
-    const menu = document.getElementById('menu');
-    menu.innerHTML = '';
-    datos.forEach((item,i)=>{
-      const btn = document.createElement('button');
-      btn.textContent = item.nombre;
-      btn.onclick = ()=> mostrarFoto(i);
-      menu.appendChild(btn);
-    });
-  }
-
-  function mostrarFoto(i){
-    const item = datos[i];
-    document.getElementById('menu').style.display='none';
-    const viewer = document.getElementById('viewer');
-    viewer.style.display='flex';
-    document.getElementById('nombreFoto').textContent = item.nombre;
-    document.getElementById('imagenFoto').src = item.imagen;
-    document.getElementById('descripcionFoto').textContent = item.descripcion;
-    document.getElementById('puntuacionFoto').innerHTML = 'Puntuación: ' + renderEstrellas(item.puntuacion) + ` (${item.puntuacion})`;
-  }
-
-  function mostrarMenu(){
-    document.getElementById('viewer').style.display='none';
-    document.getElementById('menu').style.display='grid';
-  }
-
-  function renderEstrellas(score){
-    const filled = Math.round(score);
-    return '★'.repeat(filled) + '☆'.repeat(10-filled);
-  }
-
-  // Mostrar la portada 8 segundos y luego el menú
-  window.addEventListener('load', ()=>{
-    const intro = document.getElementById('intro');
-    setTimeout(()=>{
-      intro.classList.add('oculto');
-    }, 8000);
-  });
-
-  cargarDatos();
-  </script>
-</body>
-</html>
-
-
+    async function cargarDatos() {
+      try {
