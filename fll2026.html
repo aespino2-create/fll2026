@@ -14,7 +14,7 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      overflow-y: auto; /* ✅ permet fer scroll */
+      overflow-y: auto;
     }
 
     header {
@@ -40,6 +40,13 @@
       width: 100%;
       max-width: 800px;
       margin-top: 20px;
+      opacity: 1;
+      transition: opacity 0.8s ease-in-out;
+    }
+
+    .menu.oculto {
+      opacity: 0;
+      pointer-events: none;
     }
 
     .menu button {
@@ -66,15 +73,24 @@
       gap: 16px;
       max-width: 800px;
       width: 100%;
-      padding-bottom: 40px; /* ✅ espai per evitar tallar part inferior */
+      padding-bottom: 40px;
+      opacity: 0;
+      transition: opacity 0.8s ease-in-out;
+    }
+
+    .viewer.visible {
+      display: flex;
+      opacity: 1;
     }
 
     .viewer img {
       max-width: 90%;
-      height: auto; /* ✅ manté proporció */
+      height: auto;
       border-radius: 12px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
       margin: 20px 0;
+      cursor: zoom-in;
+      transition: transform 0.3s;
     }
 
     .descripcion {
@@ -92,6 +108,11 @@
       border-radius: 8px;
       padding: 8px 12px;
       cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .back-btn:hover {
+      background: #1550cc;
     }
 
     .puntuacion {
@@ -108,26 +129,85 @@
       align-items: center;
       justify-content: center;
       z-index: 1000;
+      overflow: hidden;
       transition: opacity 1s ease-out;
     }
 
     #intro img {
-      max-width: 100%;
-      max-height: 100%;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
+      position: absolute;
+      inset: 0;
+      z-index: 1;
     }
 
     #intro.oculto {
       opacity: 0;
       pointer-events: none;
     }
+
+    /* 🔤 Text sobre la portada */
+    #intro-text {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: white;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+      animation: fadeInText 2s ease-in-out forwards;
+    }
+
+    #intro-text h1 {
+      font-size: 2.8rem;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    #intro-text p {
+      font-size: 1.4rem;
+      margin-top: 10px;
+    }
+
+    @keyframes fadeInText {
+      0% {opacity: 0; transform: translateY(20px);}
+      100% {opacity: 1; transform: translateY(0);}
+    }
+
+    /* 🔍 Estils per al modal de zoom */
+    #modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      cursor: zoom-out;
+    }
+
+    #modal img {
+      max-width: 95%;
+      max-height: 90%;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(255,255,255,0.2);
+      transition: transform 0.3s ease;
+    }
   </style>
 </head>
 
 <body>
-  <!-- Pantalla de portada -->
+  <!-- Pantalla de portada amb text -->
   <div id="intro">
     <img src="portada.png" alt="Portada" />
+    <div id="intro-text">
+      <h1>FLL 2026 — Galería de Misiones</h1>
+      <p>Explora cada reto, imagen y puntuación</p>
+    </div>
+  </div>
+
+  <!-- Modal per fer zoom -->
+  <div id="modal" onclick="tancarModal()">
+    <img id="modalImg" src="" alt="Zoom" />
   </div>
 
   <header>
@@ -141,7 +221,7 @@
     <div id="viewer" class="viewer">
       <button class="back-btn" onclick="mostrarMenu()">← Volver al menú</button>
       <h2 id="nombreFoto"></h2>
-      <img id="imagenFoto" alt="Foto" />
+      <img id="imagenFoto" alt="Foto" onclick="obrirModal(this.src)" />
       <div id="descripcionFoto" class="descripcion"></div>
       <div id="puntuacionFoto" class="puntuacion"></div>
     </div>
@@ -152,3 +232,87 @@
 
     async function cargarDatos() {
       try {
+        const resp = await fetch('data.json');
+        datos = await resp.json();
+        crearMenu();
+      } catch (err) {
+        document.getElementById('menu').innerHTML = '<p>Error al cargar data.json</p>';
+        console.error(err);
+      }
+    }
+
+    function crearMenu() {
+      const menu = document.getElementById('menu');
+      menu.innerHTML = '';
+      datos.forEach((item, i) => {
+        const btn = document.createElement('button');
+        btn.textContent = item.nombre;
+        btn.onclick = () => mostrarFoto(i);
+        menu.appendChild(btn);
+      });
+    }
+
+    function mostrarFoto(i) {
+      const menu = document.getElementById('menu');
+      const viewer = document.getElementById('viewer');
+      const item = datos[i];
+
+      menu.classList.add('oculto');
+      setTimeout(() => {
+        menu.style.display = 'none';
+        document.getElementById('nombreFoto').textContent = item.nombre;
+        document.getElementById('imagenFoto').src = item.imagen;
+        document.getElementById('descripcionFoto').textContent = item.descripcion;
+        document.getElementById('puntuacionFoto').innerHTML =
+          'Puntuación: ' + renderEstrellas(item.puntuacion) + ` (${item.puntuacion})`;
+
+        viewer.style.display = 'flex';
+        setTimeout(() => viewer.classList.add('visible'), 50);
+      }, 500);
+    }
+
+    function mostrarMenu() {
+      const menu = document.getElementById('menu');
+      const viewer = document.getElementById('viewer');
+
+      viewer.classList.remove('visible');
+      setTimeout(() => {
+        viewer.style.display = 'none';
+        menu.style.display = 'grid';
+        setTimeout(() => menu.classList.remove('oculto'), 50);
+      }, 500);
+    }
+
+    function renderEstrellas(score) {
+      const filled = Math.round(score);
+      return '★'.repeat(filled) + '☆'.repeat(10 - filled);
+    }
+
+    // 🔍 Funcions del modal
+    function obrirModal(src) {
+      const modal = document.getElementById('modal');
+      const modalImg = document.getElementById('modalImg');
+      modalImg.src = src;
+      modal.style.display = 'flex';
+    }
+
+    function tancarModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === "Escape") tancarModal();
+    });
+
+    // Mostrar portada 8 segons i després el menú
+    window.addEventListener('load', () => {
+      const intro = document.getElementById('intro');
+      setTimeout(() => {
+        intro.classList.add('oculto');
+      }, 8000);
+    });
+
+    cargarDatos();
+  </script>
+</body>
+</html>
