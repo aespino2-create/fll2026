@@ -5,6 +5,7 @@
     "imagen": "mission01.jpg",
     "descripcion": "Surface Brushing.",
     "puntuacion": 10
+    "extra": "En esta misión, el robot debe colocar la pieza roja dentro del círculo. Se valora precisión y rapidez."
   },
   {
     "id": 2,
@@ -105,6 +106,7 @@
     "puntuacion": 9.7
   }
 ]
+
 
 
 
