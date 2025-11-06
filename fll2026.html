@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Galería de Fotografías — Visualización</title>
+  <title>FLL 2026 — Galería de Misiones</title>
 
   <style>
     body {
@@ -31,6 +31,7 @@
       align-items: center;
       justify-content: flex-start;
       padding: 20px;
+      box-sizing: border-box;
     }
 
     .menu {
@@ -100,6 +101,8 @@
       border-radius: 12px;
       padding: 12px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .back-btn {
@@ -122,7 +125,48 @@
       color: #1f6feb;
     }
 
-    /* Pantalla inicial (portada) */
+    /* Pestanya desplegable */
+    .toggle-section {
+      width: 100%;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-header {
+      background: #e7ecf7;
+      padding: 12px 16px;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .toggle-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      padding: 0 16px;
+    }
+
+    .toggle-section.abierto .toggle-content {
+      max-height: 400px; /* màxim desplegament */
+      padding: 12px 16px;
+    }
+
+    .toggle-section.abierto .toggle-header::after {
+      content: "▲";
+    }
+
+    .toggle-header::after {
+      content: "▼";
+    }
+
+    /* Portada */
     #intro {
       position: fixed;
       inset: 0;
@@ -149,7 +193,6 @@
       pointer-events: none;
     }
 
-    /* 🔤 Text sobre la portada */
     #intro-text {
       position: relative;
       z-index: 2;
@@ -175,7 +218,7 @@
       100% {opacity: 1; transform: translateY(0);}
     }
 
-    /* 🔍 Estils per al modal de zoom */
+    /* Modal Zoom */
     #modal {
       display: none;
       position: fixed;
@@ -198,7 +241,6 @@
 </head>
 
 <body>
-  <!-- Pantalla de portada amb text -->
   <div id="intro">
     <img src="portada.png" alt="Portada" />
     <div id="intro-text">
@@ -207,25 +249,30 @@
     </div>
   </div>
 
-  <!-- Modal per fer zoom -->
   <div id="modal" onclick="tancarModal()">
     <img id="modalImg" src="" alt="Zoom" />
   </div>
 
   <header>
     <h1>Galeria de missions</h1>
-    <p>Fes clic en una missió per veure-la, llegir-ne la descripció i conéixer la puntuació</p>
+    <p>Fes clic en una missió per veure-la i llegir-ne la descripció</p>
   </header>
 
   <main>
     <div id="menu" class="menu"></div>
 
     <div id="viewer" class="viewer">
-      <button class="back-btn" onclick="mostrarMenu()">← Volver al menú</button>
+      <button class="back-btn" onclick="mostrarMenu()">← Tornar al menú</button>
       <h2 id="nombreFoto"></h2>
       <img id="imagenFoto" alt="Foto" onclick="obrirModal(this.src)" />
       <div id="descripcionFoto" class="descripcion"></div>
       <div id="puntuacionFoto" class="puntuacion"></div>
+
+      <!-- ✅ nova pestanya desplegable -->
+      <div id="extraSection" class="toggle-section">
+        <div class="toggle-header" onclick="toggleExtra()">📄 Més informació</div>
+        <div class="toggle-content" id="extraContent"></div>
+      </div>
     </div>
   </main>
 
@@ -266,7 +313,10 @@
         document.getElementById('imagenFoto').src = item.imagen;
         document.getElementById('descripcionFoto').textContent = item.descripcion;
         document.getElementById('puntuacionFoto').innerHTML =
-          'Puntuación: ' + renderEstrellas(item.puntuacion) + ` (${item.puntuacion})`;
+          'Puntuació: ' + renderEstrellas(item.puntuacion) + ` (${item.puntuacion})`;
+
+        // ✅ assignar text extra (si n'hi ha)
+        document.getElementById('extraContent').innerText = item.extra || "Sense informació addicional";
 
         viewer.style.display = 'flex';
         setTimeout(() => viewer.classList.add('visible'), 50);
@@ -276,7 +326,6 @@
     function mostrarMenu() {
       const menu = document.getElementById('menu');
       const viewer = document.getElementById('viewer');
-
       viewer.classList.remove('visible');
       setTimeout(() => {
         viewer.style.display = 'none';
@@ -290,7 +339,7 @@
       return '★'.repeat(filled) + '☆'.repeat(10 - filled);
     }
 
-    // 🔍 Funcions del modal
+    // 🔍 Modal zoom
     function obrirModal(src) {
       const modal = document.getElementById('modal');
       const modalImg = document.getElementById('modalImg');
@@ -306,7 +355,13 @@
       if (e.key === "Escape") tancarModal();
     });
 
-    // Mostrar portada 8 segons i després el menú
+    // ✅ Funció per desplegar o tancar la pestanya
+    function toggleExtra() {
+      const section = document.getElementById('extraSection');
+      section.classList.toggle('abierto');
+    }
+
+    // Pantalla de portada
     window.addEventListener('load', () => {
       const intro = document.getElementById('intro');
       setTimeout(() => {
@@ -318,7 +373,3 @@
   </script>
 </body>
 </html>
-
-
-
-
