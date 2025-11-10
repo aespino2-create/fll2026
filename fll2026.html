@@ -1,375 +1,180 @@
 <!doctype html>
-<html lang="es">
+<html lang="ca">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>FLL 2026 — Galería de Misiones</title>
-
+  <title>FLL 2026 — Galeria de Missions</title>
   <style>
-    body {
-      font-family: Inter, system-ui, Arial;
-      margin: 0;
-      background: #f4f6fb;
-      color: #111;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      overflow-y: auto;
-    }
+    /* --- Estils bàsics --- */
+    body{font-family:Inter,system-ui,Arial;margin:0;background:#f4f6fb;color:#111;display:flex;flex-direction:column;min-height:100vh;overflow-y:auto;}
+    header{background:#1f6feb;color:#fff;padding:16px;text-align:center;}
+    main{flex:1;display:flex;flex-direction:column;align-items:center;padding:20px;box-sizing:border-box;}
 
-    header {
-      background: #1f6feb;
-      color: #fff;
-      padding: 16px;
-      text-align: center;
-    }
+    /* --- Menu --- */
+    .menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:16px;width:100%;max-width:800px;margin-top:20px;}
+    .menu button{background:#fff;border:none;border-radius:12px;padding:20px;box-shadow:0 4px 8px rgba(0,0,0,.1);cursor:pointer;font-size:1rem;transition:.15s}
+    .menu button:hover{background:#1f6feb;color:#fff;transform:scale(1.03)}
 
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 20px;
-      box-sizing: border-box;
-    }
+    /* --- Viewer --- */
+    .viewer{display:none;flex-direction:column;align-items:center;gap:12px;max-width:900px;width:100%;padding-bottom:60px;box-sizing:border-box;}
+    .viewer.visible{display:flex;}
+    .viewer img{max-width:95%;max-height:80vh;height:auto;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.2);object-fit:contain;cursor:zoom-in;}
+    .descripcion{background:#fff;border-radius:12px;padding:12px;box-shadow:0 4px 8px rgba(0,0,0,.08);width:100%;box-sizing:border-box;}
+    .back-btn{align-self:flex-start;background:#1f6feb;color:#fff;border:none;border-radius:8px;padding:8px 12px;cursor:pointer}
+    .puntuacion{font-size:1.1rem;color:#1f6feb}
 
-    .menu {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 16px;
-      width: 100%;
-      max-width: 800px;
-      margin-top: 20px;
-      opacity: 1;
-      transition: opacity 0.8s ease-in-out;
-    }
+    /* --- Accordion (pestanya desplegable) --- */
+    .toggle-section{width:100%;margin-top:12px;border-radius:12px;overflow:hidden}
+    .toggle-header{background:#eef4ff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;border-radius:12px}
+    .toggle-header span{font-weight:600}
+    .toggle-arrow{transition:transform .25s}
+    .toggle-content{max-height:0;overflow:hidden;padding:0 16px;transition:max-height .35s ease, padding .25s ease;background:#fff;border-radius:0 0 12px 12px}
+    .toggle-section.open .toggle-content{padding:12px 16px;max-height:400px}
+    .toggle-section.open .toggle-arrow{transform:rotate(180deg)}
 
-    .menu.oculto {
-      opacity: 0;
-      pointer-events: none;
-    }
+    /* --- Intro / portada --- */
+    #intro{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:1000;transition:opacity 1s ease-out;overflow:hidden}
+    #intro img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:1}
+    #intro-text{position:relative;z-index:2;color:#fff;text-align:center;text-shadow:0 2px 8px rgba(0,0,0,.8)}
+    #intro.oculto{opacity:0;pointer-events:none}
 
-    .menu button {
-      background: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
-      cursor: pointer;
-      font-size: 1rem;
-      transition: .2s;
-    }
-
-    .menu button:hover {
-      background: #1f6feb;
-      color: #fff;
-      transform: scale(1.05);
-    }
-
-    .viewer {
-      overflow-y: auto;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      max-width: 800px;
-      width: 100%;
-      padding-bottom: 40px;
-      opacity: 0;
-      transition: opacity 0.8s ease-in-out;
-    }
-
-    .viewer.visible {
-      display: flex;
-      opacity: 1;
-    }
-
-    .viewer img {
-      max-width: 90%;
-      max-height: 80vh;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, .2);
-      margin: 20px 0;
-      cursor: zoom-in;
-      transition: transform 0.3s;
-    }
-
-    .descripcion {
-      background: #fff;
-      border-radius: 12px;
-      padding: 12px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    .back-btn {
-      align-self: flex-start;
-      background: #1f6feb;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 12px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .back-btn:hover {
-      background: #1550cc;
-    }
-
-    .puntuacion {
-      font-size: 1.2rem;
-      color: #1f6feb;
-    }
-
-    /* Pestanya desplegable */
-    .toggle-section {
-      width: 100%;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .toggle-header {
-      background: #e7ecf7;
-      padding: 12px 16px;
-      font-weight: bold;
-      cursor: pointer;
-      user-select: none;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .toggle-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease;
-      padding: 0 16px;
-    }
-
-    .toggle-section.abierto .toggle-content {
-      max-height: 400px; /* màxim desplegament */
-      padding: 12px 16px;
-    }
-
-    .toggle-section.abierto .toggle-header::after {
-      content: "▲";
-    }
-
-    .toggle-header::after {
-      content: "▼";
-    }
-
-    /* Portada */
-    #intro {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      overflow-y: auto;
-      transition: opacity 1s ease-out;
-    }
-
-    #intro img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-    }
-
-    #intro.oculto {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    #intro-text {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      color: white;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-      animation: fadeInText 2s ease-in-out forwards;
-    }
-
-    #intro-text h1 {
-      font-size: 2.8rem;
-      margin: 0;
-      font-weight: 700;
-    }
-
-    #intro-text p {
-      font-size: 1.4rem;
-      margin-top: 10px;
-    }
-
-    @keyframes fadeInText {
-      0% {opacity: 0; transform: translateY(20px);}
-      100% {opacity: 1; transform: translateY(0);}
-    }
-
-    /* Modal Zoom */
-    #modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-      cursor: zoom-out;
-    }
-
-    #modal img {
-      max-width: 95%;
-      max-height: 90%;
-      border-radius: 8px;
-      box-shadow: 0 4px 20px rgba(255,255,255,0.2);
-      transition: transform 0.3s ease;
-    }
+    /* --- Modal zoom --- */
+    #modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);align-items:center;justify-content:center;z-index:2000;cursor:zoom-out}
+    #modal img{max-width:95%;max-height:90%;border-radius:8px;box-shadow:0 4px 20px rgba(255,255,255,.08)}
   </style>
 </head>
-
 <body>
+  <!-- Portada -->
   <div id="intro">
-    <img src="portada.png" alt="Portada" />
+    <img src="portada.png" alt="Portada">
     <div id="intro-text">
       <h1>FLL 2026 — Galeria de Missions</h1>
       <p>Explora cada repte i la seva puntuació</p>
     </div>
   </div>
 
-  <div id="modal" onclick="tancarModal()">
-    <img id="modalImg" src="" alt="Zoom" />
-  </div>
+  <!-- Modal zoom -->
+  <div id="modal" onclick="tancarModal()"><img id="modalImg" src="" alt="Zoom"></div>
 
   <header>
-    <h1>Galeria de missions</h1>
-    <p>Fes clic en una missió per veure-la i llegir-ne la descripció</p>
+    <h1>Galeria de Missions</h1>
+    <p>Fes clic en una missió per veure més</p>
   </header>
 
   <main>
     <div id="menu" class="menu"></div>
 
-    <div id="viewer" class="viewer">
-      <button class="back-btn" onclick="mostrarMenu()">← Tornar al menú</button>
+    <section id="viewer" class="viewer" aria-live="polite">
+      <button class="back-btn" id="backBtn">← Tornar al menú</button>
       <h2 id="nombreFoto"></h2>
-      <img id="imagenFoto" alt="Foto" onclick="obrirModal(this.src)" />
+      <img id="imagenFoto" alt="Foto" />
       <div id="descripcionFoto" class="descripcion"></div>
       <div id="puntuacionFoto" class="puntuacion"></div>
 
-      <!-- ✅ nova pestanya desplegable -->
-      <div id="extraSection" class="toggle-section">
-        <div class="toggle-header" onclick="toggleExtra()">📄 Més informació</div>
-        <div class="toggle-content" id="extraContent"></div>
+      <!-- Accordion (es crea també per JS, però deixem l'estructura base) -->
+      <div id="extraToggle" class="toggle-section" aria-expanded="false">
+        <div class="toggle-header" id="toggleHeader"><span>Més informació</span><span class="toggle-arrow">▼</span></div>
+        <div class="toggle-content" id="extraContent">Sense informació addicional</div>
       </div>
-    </div>
+    </section>
   </main>
 
-  <script>
-    let datos = [];
+<script>
+/* =========================
+   UTIL: debug safe fetch
+   ========================= */
+async function safeFetchJSON(url){
+  const resp = await fetch(url, {cache: 'no-store'});
+  if(!resp.ok) throw new Error('Fetch failed: '+resp.status+' '+resp.statusText);
+  return resp.json();
+}
 
-    async function cargarDatos() {
-      try {
-        const resp = await fetch('data.json');
-        datos = await resp.json();
-        crearMenu();
-      } catch (err) {
-        document.getElementById('menu').innerHTML = '<p>Error al cargar data.json</p>';
-        console.error(err);
-      }
-    }
+/* =========================
+   Dades i creació menú
+   ========================= */
+let datos = [];
 
-    function crearMenu() {
-      const menu = document.getElementById('menu');
-      menu.innerHTML = '';
-      datos.forEach((item, i) => {
-        const btn = document.createElement('button');
-        btn.textContent = item.nombre;
-        btn.onclick = () => mostrarFoto(i);
-        menu.appendChild(btn);
-      });
-    }
+async function cargarDatos(){
+  try{
+    datos = await safeFetchJSON('data.json');
+    if(!Array.isArray(datos)) throw new Error('data.json no conté un array.');
+    crearMenu();
+  }catch(err){
+    console.error('Error ccarregar data.json:', err);
+    document.getElementById('menu').innerHTML = '<div style="padding:20px;background:#fff;border-radius:8px;">Error carregant dades. Revisa la consola.</div>';
+  }
+}
 
-    function mostrarFoto(i) {
-      const menu = document.getElementById('menu');
-      const viewer = document.getElementById('viewer');
-      const item = datos[i];
+function crearMenu(){
+  const menu = document.getElementById('menu');
+  menu.innerHTML = '';
+  datos.forEach((item,i)=>{
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = item.nombre || `Misión ${i+1}`;
+    btn.addEventListener('click', ()=> mostrarFoto(i));
+    menu.appendChild(btn);
+  });
+}
 
-      menu.classList.add('oculto');
-      setTimeout(() => {
-        menu.style.display = 'none';
-        document.getElementById('nombreFoto').textContent = item.nombre;
-        document.getElementById('imagenFoto').src = item.imagen;
-        document.getElementById('descripcionFoto').textContent = item.descripcion;
-        document.getElementById('puntuacionFoto').innerHTML =
-          'Puntuació: ' + renderEstrellas(item.puntuacion) + ` (${item.puntuacion})`;
+/* =========================
+   Mostrar / amagar viewer
+   ========================= */
+function mostrarFoto(i){
+  const item = datos[i];
+  if(!item){ console.warn('Item no trobat', i); return; }
 
-        // ✅ assignar text extra (si n'hi ha)
-        document.getElementById('extraContent').innerText = item.extra || "Sense informació addicional";
+  // omplir camps
+  document.getElementById('nombreFoto').textContent = item.nombre || '';
+  document.getElementById('imagenFoto').src = item.imagen || '';
+  document.getElementById('descripcionFoto').textContent = item.descripcion || '';
+  document.getElementById('puntuacionFoto').innerHTML = 'Puntuació: ' + (typeof item.puntuacion !== 'undefined' ? renderEstrellas(item.puntuacion)+' ('+item.puntuacion+')' : '—');
 
-        viewer.style.display = 'flex';
-        setTimeout(() => viewer.classList.add('visible'), 50);
-      }, 500);
-    }
+  // extra text
+  document.getElementById('extraContent').textContent = item.extra || 'Sense informació addicional';
+  // tancar l'accordion si està obert
+  document.getElementById('extraToggle').classList.remove('open');
+  document.getElementById('extraToggle').setAttribute('aria-expanded','false');
 
-    function mostrarMenu() {
-      const menu = document.getElementById('menu');
-      const viewer = document.getElementById('viewer');
-      viewer.classList.remove('visible');
-      setTimeout(() => {
-        viewer.style.display = 'none';
-        menu.style.display = 'grid';
-        setTimeout(() => menu.classList.remove('oculto'), 50);
-      }, 500);
-    }
+  // mostrar viewer amb transició
+  const menu = document.getElementById('menu');
+  const viewer = document.getElementById('viewer');
+  menu.style.display = 'none';
+  viewer.classList.add('visible');
+  // scroll al top per assegurar que s'apreciï tot
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 
-    function renderEstrellas(score) {
-      const filled = Math.round(score);
-      return '★'.repeat(filled) + '☆'.repeat(10 - filled);
-    }
+function mostrarMenu(){
+  const menu = document.getElementById('menu');
+  const viewer = document.getElementById('viewer');
+  viewer.classList.remove('visible');
+  setTimeout(()=>{
+    viewer.style.display = 'none';
+    menu.style.display = 'grid';
+    window.scrollTo({top:0,behavior:'smooth'});
+  },200);
+}
 
-    // 🔍 Modal zoom
-    function obrirModal(src) {
-      const modal = document.getElementById('modal');
-      const modalImg = document.getElementById('modalImg');
-      modalImg.src = src;
-      modal.style.display = 'flex';
-    }
+/* =========================
+   Accordion (toggle) logic
+   ========================= */
+const headerToggle = document.getElementById('toggleHeader');
+const sectionToggle = document.getElementById('extraToggle');
 
-    function tancarModal() {
-      document.getElementById('modal').style.display = 'none';
-    }
+headerToggle.addEventListener('click', toggleExtra);
+function toggleExtra(){
+  const opened = sectionToggle.classList.toggle('open');
+  sectionToggle.setAttribute('aria-expanded', opened ? 'true' : 'false');
+}
 
-    window.addEventListener('keydown', (e) => {
-      if (e.key === "Escape") tancarModal();
-    });
-
-    // ✅ Funció per desplegar o tancar la pestanya
-    function toggleExtra() {
-      const section = document.getElementById('extraSection');
-      section.classList.toggle('abierto');
-    }
-
-    // Pantalla de portada
-    window.addEventListener('load', () => {
-      const intro = document.getElementById('intro');
-      setTimeout(() => {
-        intro.classList.add('oculto');
-      }, 8000);
-    });
-
-    cargarDatos();
-  </script>
-</body>
-</html>
+/* =========================
+   Modal zoom
+   ========================= */
+function obrirModal(src){
+  const modal = document.getElementById('modal');
+  const modalImg = document.getElementById('modalImg');
+  modalImg.src = src;
+  modal.style.display = 'flex';
+}
+functi
