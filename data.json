@@ -1,0 +1,111 @@
+[
+  {
+    "id": 1,
+    "nombre": "Mission01",
+    "imagen": "mission01.jpg",
+    "descripcion": "Surface Brushing.",
+    "puntuacion": 10
+    "extra": "En esta misión, el robot debe colocar la pieza roja dentro del círculo. Se valora precisión y rapidez."
+  },
+  {
+    "id": 2,
+    "nombre": "Mission02",
+    "imagen": "mission02.jpg",
+    "descripcion": "Segona missió: treball en equip i planificació inicial.",
+    "puntuacion": 9.0
+  },
+  {
+    "id": 3,
+    "nombre": "Mission03",
+    "imagen": "mission03.jpg",
+    "descripcion": "Tercera missió: prototip del robot i proves inicials.",
+    "puntuacion": 7.8
+  },
+  {
+    "id": 4,
+    "nombre": "Mission04",
+    "imagen": "mission04.jpg",
+    "descripcion": "Quarta missió: optimització dels moviments i sensors.",
+    "puntuacion": 8.9
+  },
+  {
+    "id": 5,
+    "nombre": "Mission05",
+    "imagen": "mission05.jpg",
+    "descripcion": "Cinquena missió: presentació de resultats a l'equip.",
+    "puntuacion": 9.2
+  },
+  {
+    "id": 6,
+    "nombre": "Mission06",
+    "imagen": "mission06.jpg",
+    "descripcion": "Sisena missió: test amb el camp de joc complet.",
+    "puntuacion": 8.7
+  },
+  {
+    "id": 7,
+    "nombre": "Mission07",
+    "imagen": "mission07.jpg",
+    "descripcion": "Setena missió: millora del disseny i estabilitat del robot.",
+    "puntuacion": 9.1
+  },
+  {
+    "id": 8,
+    "nombre": "Mission08",
+    "imagen": "mission08.jpg",
+    "descripcion": "Vuitena missió: integració del software i calibració de sensors.",
+    "puntuacion": 8.3
+  },
+  {
+    "id": 9,
+    "nombre": "Mission09",
+    "imagen": "mission09.jpg",
+    "descripcion": "Novena missió: presentació de la solució davant el jurat.",
+    "puntuacion": 9.4
+  },
+  {
+    "id": 10,
+    "nombre": "Mission10",
+    "imagen": "mission10.jpg",
+    "descripcion": "Desena missió: proves finals abans del torneig.",
+    "puntuacion": 8.8
+  },
+  {
+    "id": 11,
+    "nombre": "Mission11",
+    "imagen": "mission11.jpg",
+    "descripcion": "Onzena missió: treball cooperatiu amb altres equips.",
+    "puntuacion": 8.6
+  },
+  {
+    "id": 12,
+    "nombre": "Mission12",
+    "imagen": "mission12.jpg",
+    "descripcion": "Dotzena missió: revisió tècnica i millores de programació.",
+    "puntuacion": 9.3
+  },
+  {
+    "id": 13,
+    "nombre": "Mission13",
+    "imagen": "mission13.jpg",
+    "descripcion": "Tretzena missió: preparació de la presentació final.",
+    "puntuacion": 9.0
+  },
+  {
+    "id": 14,
+    "nombre": "Mission14",
+    "imagen": "mission14.jpg",
+    "descripcion": "Catorzena missió: participació a la competició regional.",
+    "puntuacion": 9.5
+  },
+  {
+    "id": 15,
+    "nombre": "Mission15",
+    "imagen": "mission15.jpg",
+    "descripcion": "Quinzena missió: tancament i celebració del projecte.",
+    "puntuacion": 9.7
+  }
+]
+
+
+
